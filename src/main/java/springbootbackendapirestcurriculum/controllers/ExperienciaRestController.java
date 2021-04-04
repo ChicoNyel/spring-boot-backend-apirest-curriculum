@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import springbootbackendapirestcurriculum.models.entity.Experiencia;
+import springbootbackendapirestcurriculum.models.entity.Usuario;
 import springbootbackendapirestcurriculum.models.services.IExperienciaService;
+import springbootbackendapirestcurriculum.models.services.IUsuarioService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -32,6 +34,9 @@ public class ExperienciaRestController {
 
 	@Autowired
 	private IExperienciaService experienciaService;
+	
+	@Autowired
+	private IUsuarioService usuarioService;
 	
 	@GetMapping("/experiencias")
 	public List<Experiencia> index(){
@@ -60,10 +65,13 @@ public class ExperienciaRestController {
 		return new ResponseEntity<Experiencia>(experiencia, HttpStatus.OK);  
 	}
 	
-	@PostMapping("/experiencias")
-	public ResponseEntity<?> create(@Valid @RequestBody Experiencia experiencia, BindingResult result) {
+	@PostMapping("/experiencias/{id}")
+	public ResponseEntity<?> create(@Valid @RequestBody Experiencia experiencia, BindingResult result, @PathVariable Long id) {
 		
 		Experiencia experienciaNew = null;
+		Usuario usuarioNew = null;
+		Usuario usuario = null;
+		
 		Map<String, Object> response = new HashMap<>();
 		
 		if(result.hasErrors()) {
@@ -87,7 +95,15 @@ public class ExperienciaRestController {
 		}
 		
 		try {
+
+			usuario = usuarioService.findById(id);
+			
+			usuario.addExperiencia(experiencia);
+			
+			usuarioNew = usuarioService.save(usuario);
+			
 			experienciaNew = experienciaService.save(experiencia);
+			
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -139,7 +155,6 @@ public class ExperienciaRestController {
 			experienciaActual.setFechaInicio(experienciaActual.getFechaInicio());
 			experienciaActual.setFechaTermino(experienciaActual.getFechaTermino());
 			experienciaActual.setDescripcion(experienciaActual.getDescripcion());
-			experienciaActual.setUsuario(experienciaActual.getUsuario());
 			
 			experienciaUpdated = experienciaService.save(experienciaActual);
 		

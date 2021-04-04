@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import springbootbackendapirestcurriculum.models.entity.Estudio;
+import springbootbackendapirestcurriculum.models.entity.Usuario;
 import springbootbackendapirestcurriculum.models.services.IEstudioService;
+import springbootbackendapirestcurriculum.models.services.IUsuarioService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -32,6 +34,9 @@ public class EstudioRestController {
 
 	@Autowired
 	private IEstudioService estudioService;
+	
+	@Autowired
+	private IUsuarioService usuarioService;
 	
 	@GetMapping("/estudios")
 	public List<Estudio> index(){
@@ -60,10 +65,13 @@ public class EstudioRestController {
 		return new ResponseEntity<Estudio>(estudio, HttpStatus.OK);  
 	}
 	
-	@PostMapping("/estudios")
-	public ResponseEntity<?> create(@Valid @RequestBody Estudio estudio, BindingResult result) {
+	@PostMapping("/estudios/{id}")
+	public ResponseEntity<?> create(@Valid @RequestBody Estudio estudio, BindingResult result, @PathVariable Long id) {
 		
 		Estudio estudioNew = null;
+		Usuario usuarioNew = null;
+		Usuario usuario = null;
+		
 		Map<String, Object> response = new HashMap<>();
 		
 		if(result.hasErrors()) {
@@ -87,7 +95,15 @@ public class EstudioRestController {
 		}
 		
 		try {
+			
+			usuario = usuarioService.findById(id);
+			
+			usuario.addEstudio(estudio);
+			
+			usuarioNew = usuarioService.save(usuario);
+			
 			estudioNew = estudioService.save(estudio);
+			
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -141,7 +157,6 @@ public class EstudioRestController {
 			estudioActual.setLugar(estudio.getLugar());
 			estudioActual.setTipo(estudio.getTipo());
 			estudioActual.setTitulo(estudio.getTitulo());
-			estudioActual.setUsuario(estudio.getUsuario());
 			
 			estudioUpdated = estudioService.save(estudioActual);
 		

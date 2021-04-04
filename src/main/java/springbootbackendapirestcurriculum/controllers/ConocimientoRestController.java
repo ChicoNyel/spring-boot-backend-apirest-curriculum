@@ -23,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import springbootbackendapirestcurriculum.models.entity.Conocimiento;
+import springbootbackendapirestcurriculum.models.entity.Usuario;
 import springbootbackendapirestcurriculum.models.services.IConocimientoService;
+import springbootbackendapirestcurriculum.models.services.IUsuarioService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -32,6 +34,9 @@ public class ConocimientoRestController {
 
 	@Autowired
 	private IConocimientoService conocimientoService;
+	
+	@Autowired
+	private IUsuarioService usuarioService;
 	
 	@GetMapping("/conocimientos")
 	public List<Conocimiento> index(){
@@ -60,10 +65,13 @@ public class ConocimientoRestController {
 		return new ResponseEntity<Conocimiento>(conocimiento, HttpStatus.OK);  
 	}
 	
-	@PostMapping("/conocimientos")
-	public ResponseEntity<?> create(@Valid @RequestBody Conocimiento conocimiento, BindingResult result) {
+	@PostMapping("/conocimientos/{id}")
+	public ResponseEntity<?> create(@Valid @RequestBody Conocimiento conocimiento, BindingResult result, @PathVariable Long id) {
 		
 		Conocimiento conocimientoNew = null;
+		Usuario usuarioNew = null;
+		Usuario usuario = null;
+		
 		Map<String, Object> response = new HashMap<>();
 		
 		if(result.hasErrors()) {
@@ -87,7 +95,15 @@ public class ConocimientoRestController {
 		}
 		
 		try {
+			
+			usuario = usuarioService.findById(id);
+			
+			usuario.addConocimiento(conocimiento);
+			
+			usuarioNew = usuarioService.save(usuario);
+			
 			conocimientoNew = conocimientoService.save(conocimiento);
+			
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -138,7 +154,6 @@ public class ConocimientoRestController {
 		
 			conocimientoActual.setAutoevaluacion(conocimiento.getAutoevaluacion());
 			conocimientoActual.setDescripcion(conocimiento.getDescripcion());
-			conocimientoActual.setUsuario(conocimiento.getUsuario());
 			
 			conocimientoUpdated = conocimientoService.save(conocimientoActual);
 		
@@ -149,7 +164,7 @@ public class ConocimientoRestController {
 		}
 		
 		response.put("mensaje", "El conocimiento ha sido actualizado con exito");
-		response.put("conocimiento",conocimientoUpdated);
+		response.put("conocimiento", conocimientoUpdated);
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}

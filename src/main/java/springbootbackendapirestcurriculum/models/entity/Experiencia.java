@@ -5,11 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,8 +15,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "experiencias")
@@ -33,13 +29,13 @@ public class Experiencia implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@JsonIgnoreProperties(value= {"experiencias", "hibernateLazyInitializer", "handler"}, allowSetters=true)
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Usuario usuario;
-	
 	@NotBlank
 	@Column(name = "descripcion")
 	private String descripcion;
+	
+	@NotBlank
+	@Column(name = "lugar")
+	private String lugar;
 	
 	@NotNull
 	@Column(name = "fecha_inicio")
@@ -56,10 +52,9 @@ public class Experiencia implements Serializable{
 	public Experiencia() {
 	}
 
-	public Experiencia(Long id, Usuario usuario, @NotBlank String descripcion, @NotNull Date fechaInicio,
+	public Experiencia(Long id, @NotBlank String descripcion, @NotNull Date fechaInicio,
 			@NotNull Date fechaTermino) {
 		this.id = id;
-		this.usuario = usuario;
 		this.descripcion = descripcion;
 		this.fechaInicio = fechaInicio;
 		this.fechaTermino = fechaTermino;
@@ -71,14 +66,6 @@ public class Experiencia implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 	public String getDescripcion() {
@@ -107,7 +94,7 @@ public class Experiencia implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Experiencia [id=" + id + ", usuario=" + usuario + ", descripcion=" + descripcion + ", fechaInicio="
+		return "Experiencia [id=" + id + ", descripcion=" + descripcion + ", fechaInicio="
 				+ fechaInicio + ", fechaTermino=" + fechaTermino + "]";
 	}
 	

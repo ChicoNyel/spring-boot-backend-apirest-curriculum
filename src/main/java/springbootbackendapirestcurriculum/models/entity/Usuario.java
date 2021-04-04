@@ -1,6 +1,7 @@
 package springbootbackendapirestcurriculum.models.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,16 +41,19 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@JsonIgnoreProperties(value = { "usuario", "hibernateLazyInitializer", "handler" }, allowSetters = true)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "usuario_id")
 	private List<Conocimiento> conocimientos;
 
-	@JsonIgnoreProperties(value = { "usuario", "hibernateLazyInitializer", "handler" }, allowSetters = true)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "usuario_id")
 	private List<Estudio> estudios;
 
-	@JsonIgnoreProperties(value = { "usuario", "hibernateLazyInitializer", "handler" }, allowSetters = true)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
+	@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "usuario_id")
 	private List<Experiencia> experiencias;
 
 	@NotEmpty
@@ -117,7 +122,6 @@ public class Usuario implements Serializable {
 	@Column(name = "fecha_nacimiento")
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Past
 	private Date fechaNacimiento;
 
 	@Column(name = "presentacion")
@@ -134,8 +138,16 @@ public class Usuario implements Serializable {
 	@NotNull
 	@Column(name = "numero")
 	private int numero;
+	
+	@PrePersist
+	public void prePersist() {
+		this.fechaRegistro = new Date();
+	}
 
 	public Usuario() {
+		this.conocimientos = new ArrayList<>();
+		this.estudios = new ArrayList<>();
+		this.experiencias = new ArrayList<>();
 	}
 
 	public Usuario(Long id, List<Conocimiento> conocimientos, List<Estudio> estudios,
@@ -187,6 +199,10 @@ public class Usuario implements Serializable {
 	public void setConocimientos(List<Conocimiento> conocimientos) {
 		this.conocimientos = conocimientos;
 	}
+	
+	public void addConocimiento(Conocimiento conocimiento) {
+		this.conocimientos.add(conocimiento);
+	}
 
 	public List<Estudio> getEstudios() {
 		return estudios;
@@ -195,6 +211,10 @@ public class Usuario implements Serializable {
 	public void setEstudios(List<Estudio> estudios) {
 		this.estudios = estudios;
 	}
+	
+	public void addEstudio(Estudio estudio) {
+		this.estudios.add(estudio);
+	}
 
 	public List<Experiencia> getExperiencias() {
 		return experiencias;
@@ -202,6 +222,10 @@ public class Usuario implements Serializable {
 
 	public void setExperiencias(List<Experiencia> experiencias) {
 		this.experiencias = experiencias;
+	}
+	
+	public void addExperiencia(Experiencia experiencia) {
+		this.experiencias.add(experiencia);
 	}
 
 	public String getUsername() {

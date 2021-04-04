@@ -5,11 +5,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -17,8 +15,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "estudios")
@@ -32,10 +28,6 @@ public class Estudio implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@JsonIgnoreProperties(value= {"estudios", "hibernateLazyInitializer", "handler"}, allowSetters=true)
-	@ManyToOne(fetch = FetchType.LAZY)
-	private Usuario usuario;
 	
 	// Ej: Ingeniero civil 
 	@NotBlank
@@ -67,10 +59,9 @@ public class Estudio implements Serializable{
 	public Estudio() {
 	}
 
-	public Estudio(Long id, Usuario usuario, @NotBlank String titulo, @NotBlank String lugar, @NotBlank String tipo,
+	public Estudio(Long id, @NotBlank String titulo, @NotBlank String lugar, @NotBlank String tipo,
 			@NotNull Date fechaInicio, @NotNull Date fechaTermino) {
 		this.id = id;
-		this.usuario = usuario;
 		this.titulo = titulo;
 		this.lugar = lugar;
 		this.tipo = tipo;
@@ -84,14 +75,6 @@ public class Estudio implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 	public String getTitulo() {
@@ -136,7 +119,7 @@ public class Estudio implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Estudio [id=" + id + ", usuario=" + usuario + ", titulo=" + titulo + ", lugar=" + lugar + ", tipo="
+		return "Estudio [id=" + id + ", titulo=" + titulo + ", lugar=" + lugar + ", tipo="
 				+ tipo + ", fechaInicio=" + fechaInicio + ", fechaTermino=" + fechaTermino + "]";
 	}
 	
