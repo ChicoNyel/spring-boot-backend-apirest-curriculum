@@ -98,6 +98,11 @@ public class EstudioRestController {
 			
 			usuario = usuarioService.findById(id);
 			
+			if(usuario == null) {
+				response.put("mensaje", "Error: no se pudo agregar el estudio, el usuario ID: ".concat(id.toString()).concat(" no existe en la base de datos!"));
+				return new ResponseEntity<Map<String, Object>> (response, HttpStatus.NOT_FOUND);
+			}
+			
 			usuario.addEstudio(estudio);
 			
 			usuarioNew = usuarioService.save(usuario);

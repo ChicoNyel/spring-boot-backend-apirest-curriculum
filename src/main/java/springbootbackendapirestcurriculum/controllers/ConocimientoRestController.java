@@ -98,12 +98,17 @@ public class ConocimientoRestController {
 			
 			usuario = usuarioService.findById(id);
 			
+			if(usuario == null) {
+				response.put("mensaje", "Error: no se pudo agregar el conocimiento, el usuario ID: ".concat(id.toString()).concat(" no existe en la base de datos!"));
+				return new ResponseEntity<Map<String, Object>> (response, HttpStatus.NOT_FOUND);
+			}
+			
 			usuario.addConocimiento(conocimiento);
 			
 			usuarioNew = usuarioService.save(usuario);
 			
 			conocimientoNew = conocimientoService.save(conocimiento);
-			
+
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
