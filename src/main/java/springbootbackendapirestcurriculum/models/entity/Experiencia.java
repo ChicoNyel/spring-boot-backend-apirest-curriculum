@@ -52,10 +52,11 @@ public class Experiencia implements Serializable{
 	public Experiencia() {
 	}
 
-	public Experiencia(Long id, @NotBlank String descripcion, @NotNull Date fechaInicio,
+	public Experiencia(Long id, @NotBlank String descripcion, @NotBlank String lugar, @NotNull Date fechaInicio,
 			@NotNull Date fechaTermino) {
 		this.id = id;
 		this.descripcion = descripcion;
+		this.lugar = lugar;
 		this.fechaInicio = fechaInicio;
 		this.fechaTermino = fechaTermino;
 	}
@@ -76,6 +77,14 @@ public class Experiencia implements Serializable{
 		this.descripcion = descripcion;
 	}
 
+	public String getLugar() {
+		return lugar;
+	}
+
+	public void setLugar(String lugar) {
+		this.lugar = lugar;
+	}
+
 	public Date getFechaInicio() {
 		return fechaInicio;
 	}
@@ -94,7 +103,7 @@ public class Experiencia implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Experiencia [id=" + id + ", descripcion=" + descripcion + ", fechaInicio="
+		return "Experiencia [id=" + id + ", descripcion=" + descripcion + ", lugar=" + lugar + ", fechaInicio="
 				+ fechaInicio + ", fechaTermino=" + fechaTermino + "]";
 	}
 	
