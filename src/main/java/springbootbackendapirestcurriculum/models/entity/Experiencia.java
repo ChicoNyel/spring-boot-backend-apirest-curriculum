@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "experiencias")
@@ -40,13 +40,13 @@ public class Experiencia implements Serializable{
 	@NotNull
 	@Column(name = "fecha_inicio")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone="America/Santiago")
 	private Date fechaInicio;
 	
 	@NotNull
 	@Column(name = "fecha_termino")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone="America/Santiago")
 	private Date fechaTermino;
 
 	public Experiencia() {

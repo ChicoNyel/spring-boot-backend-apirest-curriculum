@@ -22,10 +22,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -121,7 +121,7 @@ public class Usuario implements Serializable {
 	@NotNull
 	@Column(name = "fecha_nacimiento")
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd", timezone="America/Santiago")
 	private Date fechaNacimiento;
 
 	@Column(name = "presentacion")
@@ -156,7 +156,7 @@ public class Usuario implements Serializable {
 			@NotBlank String segundoNombre, @NotBlank String primerApellido, @NotBlank String segundoApellido,
 			@NotBlank String telefono, @NotBlank @Email String email, @NotBlank String run,
 			@NotBlank String estadoCivil, String imagen, @NotBlank String nacionalidad,
-			@NotNull @Past Date fechaNacimiento, String presentacion, @NotBlank String ciudad, @NotBlank String calle,
+			@NotNull Date fechaNacimiento, String presentacion, @NotBlank String ciudad, @NotBlank String calle,
 			@NotNull int numero) {
 		this.id = id;
 		this.conocimientos = conocimientos;
