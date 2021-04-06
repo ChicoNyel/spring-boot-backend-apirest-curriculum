@@ -137,13 +137,33 @@ public class UsuarioRestController {
 		try {
 			
 			usuarioActual.setConocimientos(usuario.getConocimientos());
-			usuarioActual.setEnabled(usuario.getEnabled());
 			usuarioActual.setEstudios(usuario.getEstudios());
 			usuarioActual.setExperiencias(usuario.getExperiencias());
+			
+			usuarioActual.setEnabled(usuario.getEnabled());
 			usuarioActual.setFechaRegistro(usuario.getFechaRegistro());
 			usuarioActual.setPassword(usuario.getPassword());
 			usuarioActual.setRoles(usuario.getRoles());
 			usuarioActual.setUsername(usuario.getUsername());
+			
+			usuarioActual.setPrimerNombre(usuario.getPrimerNombre());
+			usuarioActual.setSegundoNombre(usuario.getSegundoNombre());
+			usuarioActual.setPrimerApellido(usuario.getPrimerApellido());
+			usuarioActual.setSegundoApellido(usuario.getSegundoApellido());
+			usuarioActual.setEstadoCivil(usuario.getEstadoCivil());
+			usuarioActual.setFechaNacimiento(usuario.getFechaNacimiento());
+			usuarioActual.setNacionalidad(usuario.getNacionalidad());
+			usuarioActual.setRun(usuario.getRun());
+			
+			usuarioActual.setCalle(usuario.getCalle());
+			usuarioActual.setCiudad(usuario.getCiudad());
+			usuarioActual.setEmail(usuario.getEmail());
+			usuarioActual.setNumero(usuario.getNumero());
+			usuarioActual.setTelefono(usuario.getTelefono());
+			
+			usuarioActual.setImagen(usuario.getImagen());
+			
+			usuarioActual.setPresentacion(usuario.getPresentacion());
 			
 			usuarioUpdated = usuarioService.save(usuarioActual);
 		

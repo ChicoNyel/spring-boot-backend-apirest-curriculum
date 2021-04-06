@@ -107,8 +107,6 @@ public class EstudioRestController {
 			
 			usuarioNew = usuarioService.save(usuario);
 			
-			estudioNew = estudioService.save(estudio);
-			
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -116,7 +114,7 @@ public class EstudioRestController {
 		}
 		
 		response.put("mensaje", "El estudio ha sido creado con exito");
-		response.put("estudio", estudioNew);
+		response.put("estudio", estudio);
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);  
 	}

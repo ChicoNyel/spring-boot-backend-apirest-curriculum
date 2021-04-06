@@ -106,8 +106,6 @@ public class ConocimientoRestController {
 			usuario.addConocimiento(conocimiento);
 			
 			usuarioNew = usuarioService.save(usuario);
-			
-			conocimientoNew = conocimientoService.save(conocimiento);
 
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
@@ -116,7 +114,7 @@ public class ConocimientoRestController {
 		}
 		
 		response.put("mensaje", "El conocimiento ha sido creado con exito");
-		response.put("conocimiento", conocimientoNew);
+		response.put("conocimiento", conocimiento);
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);  
 	}

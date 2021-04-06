@@ -107,8 +107,6 @@ public class ExperienciaRestController {
 			
 			usuarioNew = usuarioService.save(usuario);
 			
-			experienciaNew = experienciaService.save(experiencia);
-			
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
 			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
@@ -116,7 +114,7 @@ public class ExperienciaRestController {
 		}
 		
 		response.put("mensaje", "El experiencia ha sido creado con exito");
-		response.put("experiencia", experienciaNew);
+		response.put("experiencia", experiencia);
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);  
 	}
@@ -160,6 +158,7 @@ public class ExperienciaRestController {
 			experienciaActual.setFechaInicio(experienciaActual.getFechaInicio());
 			experienciaActual.setFechaTermino(experienciaActual.getFechaTermino());
 			experienciaActual.setDescripcion(experienciaActual.getDescripcion());
+			experienciaActual.setLugar(experienciaActual.getLugar());
 			
 			experienciaUpdated = experienciaService.save(experienciaActual);
 		
