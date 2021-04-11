@@ -148,6 +148,7 @@ public class Usuario implements Serializable {
 		this.conocimientos = new ArrayList<>();
 		this.estudios = new ArrayList<>();
 		this.experiencias = new ArrayList<>();
+		this.imagen = "user.png";
 	}
 
 	public Usuario(Long id, List<Conocimiento> conocimientos, List<Estudio> estudios,
