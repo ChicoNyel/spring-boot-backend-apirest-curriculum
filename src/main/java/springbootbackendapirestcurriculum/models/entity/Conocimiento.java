@@ -46,7 +46,6 @@ public class Conocimiento implements Serializable {
 	}
 
 	public Conocimiento(Long id, Tecnologia tecnologia, @NotNull @Min(1) @Max(10) int autoevaluacion) {
-		super();
 		this.id = id;
 		this.tecnologia = tecnologia;
 		this.autoevaluacion = autoevaluacion;

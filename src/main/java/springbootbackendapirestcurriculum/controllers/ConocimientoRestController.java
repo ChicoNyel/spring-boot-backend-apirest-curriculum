@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import springbootbackendapirestcurriculum.models.entity.Conocimiento;
+import springbootbackendapirestcurriculum.models.entity.Persona;
 import springbootbackendapirestcurriculum.models.entity.Tecnologia;
-import springbootbackendapirestcurriculum.models.entity.Usuario;
 import springbootbackendapirestcurriculum.models.services.IConocimientoService;
-import springbootbackendapirestcurriculum.models.services.IUsuarioService;
+import springbootbackendapirestcurriculum.models.services.IPersonaService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -37,7 +37,7 @@ public class ConocimientoRestController {
 	private IConocimientoService conocimientoService;
 	
 	@Autowired
-	private IUsuarioService usuarioService;
+	private IPersonaService personaService;
 	
 	@GetMapping("/conocimientos")
 	public List<Conocimiento> index(){
@@ -70,8 +70,8 @@ public class ConocimientoRestController {
 	public ResponseEntity<?> create(@Valid @RequestBody Conocimiento conocimiento, BindingResult result, @PathVariable Long id) {
 		
 		Conocimiento conocimientoNew = null;
-		Usuario usuarioNew = null;
-		Usuario usuario = null;
+		Persona personaNew = null;
+		Persona persona = null;
 		
 		Map<String, Object> response = new HashMap<>();
 		
@@ -97,16 +97,16 @@ public class ConocimientoRestController {
 		
 		try {
 			
-			usuario = usuarioService.findById(id);
+			persona = personaService.findById(id);
 			
-			if(usuario == null) {
-				response.put("mensaje", "Error: no se pudo agregar el conocimiento, el usuario ID: ".concat(id.toString()).concat(" no existe en la base de datos!"));
+			if(persona == null) {
+				response.put("mensaje", "Error: no se pudo agregar el conocimiento, la persona ID: ".concat(id.toString()).concat(" no existe en la base de datos!"));
 				return new ResponseEntity<Map<String, Object>> (response, HttpStatus.NOT_FOUND);
 			}
 			
-			usuario.addConocimiento(conocimiento);
+			persona.addConocimiento(conocimiento);
 			
-			usuarioNew = usuarioService.save(usuario);
+			personaNew = personaService.save(persona);
 
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");

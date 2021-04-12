@@ -14,23 +14,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "users")
-public class Usuario implements Serializable {
+@Table(name = "personas")
+public class Persona implements Serializable {
 
 	/**
 	 * 
@@ -43,40 +39,18 @@ public class Usuario implements Serializable {
 
 	@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "persona_id")
 	private List<Conocimiento> conocimientos;
 
 	@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "persona_id")
 	private List<Estudio> estudios;
 
 	@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "usuario_id")
+	@JoinColumn(name = "persona_id")
 	private List<Experiencia> experiencias;
-
-	@NotEmpty
-	@Column(name = "username")
-	private String username;
-
-	@NotEmpty
-	@Column(name = "password")
-	private String password;
-
-	@NotNull
-	@Column(name = "enabled")
-	private Boolean enabled;
-
-	@NotNull
-	@Column(name = "fecha_registro")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date fechaRegistro;
-
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id")
-	private List<Role> roles;
 
 	@NotBlank
 	@Column(name = "primer_nombre")
@@ -121,7 +95,7 @@ public class Usuario implements Serializable {
 	@NotNull
 	@Column(name = "fecha_nacimiento")
 	@Temporal(TemporalType.DATE)
-	@JsonFormat(pattern="yyyy-MM-dd", timezone="America/Santiago")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/Santiago")
 	private Date fechaNacimiento;
 
 	@Column(name = "presentacion")
@@ -138,35 +112,23 @@ public class Usuario implements Serializable {
 	@NotNull
 	@Column(name = "numero")
 	private int numero;
-	
-	@PrePersist
-	public void prePersist() {
-		this.fechaRegistro = new Date();
-	}
 
-	public Usuario() {
+	public Persona() {
 		this.conocimientos = new ArrayList<>();
 		this.estudios = new ArrayList<>();
 		this.experiencias = new ArrayList<>();
 	}
 
-	public Usuario(Long id, List<Conocimiento> conocimientos, List<Estudio> estudios,
-			List<Experiencia> experiencias, @NotEmpty String username, @NotEmpty String password,
-			@NotNull Boolean enabled, @NotNull Date fechaRegistro, List<Role> roles, @NotBlank String primerNombre,
-			@NotBlank String segundoNombre, @NotBlank String primerApellido, @NotBlank String segundoApellido,
-			@NotBlank String telefono, @NotBlank @Email String email, @NotBlank String run,
-			@NotBlank String estadoCivil, String imagen, @NotBlank String nacionalidad,
+	public Persona(Long id, List<Conocimiento> conocimientos, List<Estudio> estudios, List<Experiencia> experiencias,
+			@NotBlank String primerNombre, @NotBlank String segundoNombre, @NotBlank String primerApellido,
+			@NotBlank String segundoApellido, @NotBlank String telefono, @NotBlank @Email String email,
+			@NotBlank String run, @NotBlank String estadoCivil, String imagen, @NotBlank String nacionalidad,
 			@NotNull Date fechaNacimiento, String presentacion, @NotBlank String ciudad, @NotBlank String calle,
 			@NotNull int numero) {
 		this.id = id;
 		this.conocimientos = conocimientos;
 		this.estudios = estudios;
 		this.experiencias = experiencias;
-		this.username = username;
-		this.password = password;
-		this.enabled = enabled;
-		this.fechaRegistro = fechaRegistro;
-		this.roles = roles;
 		this.primerNombre = primerNombre;
 		this.segundoNombre = segundoNombre;
 		this.primerApellido = primerApellido;
@@ -226,46 +188,6 @@ public class Usuario implements Serializable {
 	
 	public void addExperiencia(Experiencia experiencia) {
 		this.experiencias.add(experiencia);
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Boolean getEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-
-	public Date getFechaRegistro() {
-		return fechaRegistro;
-	}
-
-	public void setFechaRegistro(Date fechaRegistro) {
-		this.fechaRegistro = fechaRegistro;
-	}
-
-	public List<Role> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
 	}
 
 	public String getPrimerNombre() {
@@ -390,14 +312,12 @@ public class Usuario implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", conocimientos=" + conocimientos + ", estudios="
-				+ estudios + ", experiencias=" + experiencias + ", username=" + username + ", password=" + password
-				+ ", enabled=" + enabled + ", fechaRegistro=" + fechaRegistro + ", roles=" + roles + ", primerNombre="
-				+ primerNombre + ", segundoNombre=" + segundoNombre + ", primerApellido=" + primerApellido
-				+ ", segundoApellido=" + segundoApellido + ", telefono=" + telefono + ", email=" + email + ", run="
-				+ run + ", estadoCivil=" + estadoCivil + ", imagen=" + imagen + ", nacionalidad=" + nacionalidad
-				+ ", fechaNacimiento=" + fechaNacimiento + ", presentacion=" + presentacion + ", ciudad=" + ciudad
-				+ ", calle=" + calle + ", numero=" + numero + "]";
+		return "Persona [id=" + id + ", conocimientos=" + conocimientos + ", estudios=" + estudios + ", experiencias="
+				+ experiencias + ", primerNombre=" + primerNombre + ", segundoNombre=" + segundoNombre
+				+ ", primerApellido=" + primerApellido + ", segundoApellido=" + segundoApellido + ", telefono="
+				+ telefono + ", email=" + email + ", run=" + run + ", estadoCivil=" + estadoCivil + ", imagen=" + imagen
+				+ ", nacionalidad=" + nacionalidad + ", fechaNacimiento=" + fechaNacimiento + ", presentacion="
+				+ presentacion + ", ciudad=" + ciudad + ", calle=" + calle + ", numero=" + numero + "]";
 	}
 
 }

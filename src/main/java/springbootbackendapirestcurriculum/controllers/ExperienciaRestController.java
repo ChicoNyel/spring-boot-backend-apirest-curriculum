@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import springbootbackendapirestcurriculum.models.entity.Experiencia;
-import springbootbackendapirestcurriculum.models.entity.Usuario;
+import springbootbackendapirestcurriculum.models.entity.Persona;
 import springbootbackendapirestcurriculum.models.services.IExperienciaService;
-import springbootbackendapirestcurriculum.models.services.IUsuarioService;
+import springbootbackendapirestcurriculum.models.services.IPersonaService;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -36,7 +36,7 @@ public class ExperienciaRestController {
 	private IExperienciaService experienciaService;
 	
 	@Autowired
-	private IUsuarioService usuarioService;
+	private IPersonaService personaService;
 	
 	@GetMapping("/experiencias")
 	public List<Experiencia> index(){
@@ -69,8 +69,8 @@ public class ExperienciaRestController {
 	public ResponseEntity<?> create(@Valid @RequestBody Experiencia experiencia, BindingResult result, @PathVariable Long id) {
 		
 		Experiencia experienciaNew = null;
-		Usuario usuarioNew = null;
-		Usuario usuario = null;
+		Persona personaNew = null;
+		Persona persona = null;
 		
 		Map<String, Object> response = new HashMap<>();
 		
@@ -96,16 +96,16 @@ public class ExperienciaRestController {
 		
 		try {
 
-			usuario = usuarioService.findById(id);
+			persona = personaService.findById(id);
 			
-			if(usuario == null) {
-				response.put("mensaje", "Error: no se pudo agregar la experiencia, el usuario ID: ".concat(id.toString()).concat(" no existe en la base de datos!"));
+			if(persona == null) {
+				response.put("mensaje", "Error: no se pudo agregar la experiencia, la persona ID: ".concat(id.toString()).concat(" no existe en la base de datos!"));
 				return new ResponseEntity<Map<String, Object>> (response, HttpStatus.NOT_FOUND);
 			}
 			
-			usuario.addExperiencia(experiencia);
+			persona.addExperiencia(experiencia);
 			
-			usuarioNew = usuarioService.save(usuario);
+			personaNew = personaService.save(persona);
 			
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al realizar el insert en la base de datos");
