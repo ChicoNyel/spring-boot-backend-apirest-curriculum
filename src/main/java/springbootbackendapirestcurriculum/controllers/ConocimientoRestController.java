@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import springbootbackendapirestcurriculum.models.entity.Conocimiento;
+import springbootbackendapirestcurriculum.models.entity.Tecnologia;
 import springbootbackendapirestcurriculum.models.entity.Usuario;
 import springbootbackendapirestcurriculum.models.services.IConocimientoService;
 import springbootbackendapirestcurriculum.models.services.IUsuarioService;
@@ -156,7 +157,7 @@ public class ConocimientoRestController {
 		try {
 		
 			conocimientoActual.setAutoevaluacion(conocimiento.getAutoevaluacion());
-			conocimientoActual.setDescripcion(conocimiento.getDescripcion());
+			conocimientoActual.setTecnologia(conocimiento.getTecnologia());
 			
 			conocimientoUpdated = conocimientoService.save(conocimientoActual);
 		
@@ -190,6 +191,11 @@ public class ConocimientoRestController {
 		response.put("mensaje", "El conocimiento eliminado con exito!");
 		
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/conocimientos/tecnologias")
+	public List<Tecnologia> listarTecnologias(){
+		return conocimientoService.findAllTecnologias();
 	}
 	
 }

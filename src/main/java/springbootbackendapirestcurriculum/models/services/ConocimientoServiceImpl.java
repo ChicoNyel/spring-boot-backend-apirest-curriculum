@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import springbootbackendapirestcurriculum.models.dao.IConocimientoDao;
 import springbootbackendapirestcurriculum.models.entity.Conocimiento;
+import springbootbackendapirestcurriculum.models.entity.Tecnologia;
 
 @Service
 public class ConocimientoServiceImpl implements IConocimientoService{
@@ -37,6 +38,12 @@ public class ConocimientoServiceImpl implements IConocimientoService{
 	@Transactional
 	public void delete(Long id) {
 		conocimientoDao.deleteById(id);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Tecnologia> findAllTecnologias() {
+		return conocimientoDao.findAllTecnologias();
 	}
 
 }
