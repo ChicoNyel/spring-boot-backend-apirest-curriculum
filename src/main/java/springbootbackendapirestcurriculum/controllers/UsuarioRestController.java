@@ -205,7 +205,7 @@ public class UsuarioRestController {
 			Usuario usuario = usuarioService.findById(id);
 			String nombreFotoAnterior = usuario.getImagen();
 			
-			if(nombreFotoAnterior != null && nombreFotoAnterior.length() > 0 && !nombreFotoAnterior.equals("user.png")) {
+			if(nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
 				Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
 				File archivoFotoAnterior = rutaFotoAnterior.toFile();
 				if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
@@ -250,7 +250,7 @@ public class UsuarioRestController {
 			
 			String nombreFotoAnterior = usuario.getImagen();
 			
-			if(nombreFotoAnterior != null && nombreFotoAnterior.length() > 0 && !nombreFotoAnterior.equals("user.png")) {
+			if(nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
 				Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath();
 				File archivoFotoAnterior = rutaFotoAnterior.toFile();
 				if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
@@ -287,7 +287,17 @@ public class UsuarioRestController {
 		}
 		
 		if(!recurso.exists() && !recurso.isReadable()) {
-			throw new RuntimeException("Error no se pudo cargar la imagen: " + nombreFoto);
+			
+			rutaArchivo = Paths.get("src/main/resources/static/images").resolve("no-usuario.png").toAbsolutePath();
+			
+			try {
+				recurso = new UrlResource(rutaArchivo.toUri());
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			
+			log.error("Error no se pudo cargar la imagen: " + nombreFoto);
+			
 		}
 		
 		HttpHeaders cabecera = new HttpHeaders();
