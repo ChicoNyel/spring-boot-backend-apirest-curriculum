@@ -23,3 +23,9 @@ INSERT INTO estudios (id, fecha_inicio, fecha_termino, lugar, tipo, titulo, pers
 INSERT INTO estudios (id, fecha_inicio, fecha_termino, lugar, tipo, titulo, persona_id) VALUES (5, '2021-01-16', '2021-02-20', 'Udemy', 'Certificacion', 'NodeJS', 1);
 
 INSERT INTO experiencias (id, lugar, descripcion, fecha_inicio, fecha_termino, persona_id) VALUES (1, 'Universidad de Concepción', 'Fue una experiencia bastante grata', '2020-01-03', '2020-03-20', 1);
+
+INSERT INTO usuarios (username, password, enabled, nombre, apellido, email) VALUES ('alan', '$2a$10$cKBwV6RZdYPdchk5sSvfxuNOBbleR0iRVKyhDFExzUSyAnS/.ALsC', 1, 'Alan', 'Moreno', 'Barca3420@gmail.com');
+
+INSERT INTO roles (nombre) VALUES ('ROLE_USER');
+
+INSERT INTO usuarios_roles (usuario_id, role_id) VALUES (1, 1);
