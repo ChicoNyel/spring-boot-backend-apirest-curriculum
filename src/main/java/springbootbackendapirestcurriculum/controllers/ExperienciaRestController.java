@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,11 +39,13 @@ public class ExperienciaRestController {
 	@Autowired
 	private IPersonaService personaService;
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/experiencias")
 	public List<Experiencia> index(){
 		return experienciaService.findAll();
 	}
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/experiencias/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -65,6 +68,7 @@ public class ExperienciaRestController {
 		return new ResponseEntity<Experiencia>(experiencia, HttpStatus.OK);  
 	}
 	
+	@Secured("ROLE_USER")
 	@PostMapping("/experiencias/{id}")
 	public ResponseEntity<?> create(@Valid @RequestBody Experiencia experiencia, BindingResult result, @PathVariable Long id) {
 		
@@ -119,6 +123,7 @@ public class ExperienciaRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);  
 	}
 	
+	@Secured("ROLE_USER")
 	@PutMapping("/experiencias/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Experiencia experiencia, BindingResult result, @PathVariable Long id) {
 		
@@ -174,6 +179,7 @@ public class ExperienciaRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
+	@Secured("ROLE_USER")
 	@DeleteMapping("/experiencias/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		

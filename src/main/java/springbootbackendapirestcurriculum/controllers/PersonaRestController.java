@@ -15,6 +15,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,6 +49,7 @@ public class PersonaRestController {
 		return personaService.findAll();
 	}
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/personas/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -110,6 +112,7 @@ public class PersonaRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);  
 	}
 	
+	@Secured("ROLE_USER")
 	@PutMapping("/personas/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Persona persona, BindingResult result, @PathVariable Long id) {
 		
@@ -208,6 +211,7 @@ public class PersonaRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
+	@Secured("ROLE_USER")
 	@PostMapping("/personas/upload")
 	public ResponseEntity<?> upload(@RequestParam("archivo") MultipartFile archivo, @RequestParam("id") Long id){
 		
@@ -244,6 +248,7 @@ public class PersonaRestController {
 		
 	}
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/personas/uploads/img/{nombreFoto:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
 		

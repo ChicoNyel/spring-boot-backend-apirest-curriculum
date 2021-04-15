@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,11 +40,13 @@ public class ConocimientoRestController {
 	@Autowired
 	private IPersonaService personaService;
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/conocimientos")
 	public List<Conocimiento> index(){
 		return conocimientoService.findAll();
 	}
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/conocimientos/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -66,6 +69,7 @@ public class ConocimientoRestController {
 		return new ResponseEntity<Conocimiento>(conocimiento, HttpStatus.OK);  
 	}
 	
+	@Secured("ROLE_USER")
 	@PostMapping("/conocimientos/{id}")
 	public ResponseEntity<?> create(@Valid @RequestBody Conocimiento conocimiento, BindingResult result, @PathVariable Long id) {
 		
@@ -120,6 +124,7 @@ public class ConocimientoRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);  
 	}
 	
+	@Secured("ROLE_USER")
 	@PutMapping("/conocimientos/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Conocimiento conocimiento, BindingResult result, @PathVariable Long id) {
 		
@@ -173,6 +178,7 @@ public class ConocimientoRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
+	@Secured("ROLE_USER")
 	@DeleteMapping("/conocimientos/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		
@@ -193,6 +199,7 @@ public class ConocimientoRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/conocimientos/tecnologias")
 	public List<Tecnologia> listarTecnologias(){
 		return conocimientoService.findAllTecnologias();

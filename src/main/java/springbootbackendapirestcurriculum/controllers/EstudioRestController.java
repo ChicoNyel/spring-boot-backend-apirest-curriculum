@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,11 +39,13 @@ public class EstudioRestController {
 	@Autowired
 	private IPersonaService personaService;
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/estudios")
 	public List<Estudio> index(){
 		return estudioService.findAll();
 	}
 	
+	@Secured("ROLE_USER")
 	@GetMapping("/estudios/{id}")
 	public ResponseEntity<?> show(@PathVariable Long id) {
 		
@@ -65,6 +68,7 @@ public class EstudioRestController {
 		return new ResponseEntity<Estudio>(estudio, HttpStatus.OK);  
 	}
 	
+	@Secured("ROLE_USER")
 	@PostMapping("/estudios/{id}")
 	public ResponseEntity<?> create(@Valid @RequestBody Estudio estudio, BindingResult result, @PathVariable Long id) {
 		
@@ -119,6 +123,7 @@ public class EstudioRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);  
 	}
 	
+	@Secured("ROLE_USER")
 	@PutMapping("/estudios/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Estudio estudio, BindingResult result, @PathVariable Long id) {
 		
@@ -175,6 +180,7 @@ public class EstudioRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
+	@Secured("ROLE_USER")
 	@DeleteMapping("/estudios/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		
