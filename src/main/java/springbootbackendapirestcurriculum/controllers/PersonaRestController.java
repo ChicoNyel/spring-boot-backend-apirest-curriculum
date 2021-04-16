@@ -72,6 +72,29 @@ public class PersonaRestController {
 		return new ResponseEntity<Persona>(persona, HttpStatus.OK);  
 	}
 	
+	@Secured("ROLE_USER")
+	@GetMapping("/personas/showByUsername/{username}")
+	public ResponseEntity<?> showByUsername(@PathVariable String username) {
+		
+		Persona persona = null;
+		Map<String, Object> response = new HashMap<>();
+		
+		try {
+			persona = personaService.findByUsername(username);
+		} catch (DataAccessException e) {
+			response.put("mensaje", "Error al realizar la consulta en la base de datos");
+			response.put("error", e.getMessage().concat(": ").concat(e.getMostSpecificCause().getMessage()));
+			return new ResponseEntity<Map<String, Object>> (response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if( persona == null ) {
+			response.put("mensaje", "La persona username: ".concat(username).concat(" no existe en la base de datos!"));
+			return new ResponseEntity<Map<String, Object>> (response, HttpStatus.NOT_FOUND);
+		}
+		
+		return new ResponseEntity<Persona>(persona, HttpStatus.OK);  
+	}
+	
 	@PostMapping("/personas")
 	public ResponseEntity<?> create(@Valid @RequestBody Persona persona, BindingResult result) {
 		

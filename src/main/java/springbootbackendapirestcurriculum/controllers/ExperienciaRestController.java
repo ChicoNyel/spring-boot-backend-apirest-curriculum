@@ -69,8 +69,8 @@ public class ExperienciaRestController {
 	}
 	
 	@Secured("ROLE_USER")
-	@PostMapping("/experiencias/{id}")
-	public ResponseEntity<?> create(@Valid @RequestBody Experiencia experiencia, BindingResult result, @PathVariable Long id) {
+	@PostMapping("/experiencias/{username}")
+	public ResponseEntity<?> create(@Valid @RequestBody Experiencia experiencia, BindingResult result, @PathVariable String username) {
 		
 		Experiencia experienciaNew = null;
 		Persona personaNew = null;
@@ -100,10 +100,10 @@ public class ExperienciaRestController {
 		
 		try {
 
-			persona = personaService.findById(id);
+			persona = personaService.findByUsername(username);
 			
 			if(persona == null) {
-				response.put("mensaje", "Error: no se pudo agregar la experiencia, la persona ID: ".concat(id.toString()).concat(" no existe en la base de datos!"));
+				response.put("mensaje", "Error: no se pudo agregar la experiencia, la persona username: ".concat(username).concat(" no existe en la base de datos!"));
 				return new ResponseEntity<Map<String, Object>> (response, HttpStatus.NOT_FOUND);
 			}
 			
@@ -160,10 +160,10 @@ public class ExperienciaRestController {
 		
 		try {
 		
-			experienciaActual.setFechaInicio(experienciaActual.getFechaInicio());
-			experienciaActual.setFechaTermino(experienciaActual.getFechaTermino());
-			experienciaActual.setDescripcion(experienciaActual.getDescripcion());
-			experienciaActual.setLugar(experienciaActual.getLugar());
+			experienciaActual.setFechaInicio(experiencia.getFechaInicio());
+			experienciaActual.setFechaTermino(experiencia.getFechaTermino());
+			experienciaActual.setDescripcion(experiencia.getDescripcion());
+			experienciaActual.setLugar(experiencia.getLugar());
 			
 			experienciaUpdated = experienciaService.save(experienciaActual);
 		

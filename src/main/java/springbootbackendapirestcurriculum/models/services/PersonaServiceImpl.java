@@ -39,4 +39,9 @@ public class PersonaServiceImpl implements IPersonaService{
 		personaDao.deleteById(id);
 	}
 
+	@Override
+	public Persona findByUsername(String username) {
+		return personaDao.findByUsername(username);
+	}
+
 }

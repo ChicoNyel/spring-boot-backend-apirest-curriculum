@@ -69,8 +69,8 @@ public class EstudioRestController {
 	}
 	
 	@Secured("ROLE_USER")
-	@PostMapping("/estudios/{id}")
-	public ResponseEntity<?> create(@Valid @RequestBody Estudio estudio, BindingResult result, @PathVariable Long id) {
+	@PostMapping("/estudios/{username}")
+	public ResponseEntity<?> create(@Valid @RequestBody Estudio estudio, BindingResult result, @PathVariable String username) {
 		
 		Estudio estudioNew = null;
 		Persona personaNew = null;
@@ -100,10 +100,10 @@ public class EstudioRestController {
 		
 		try {
 			
-			persona = personaService.findById(id);
+			persona = personaService.findByUsername(username);
 			
 			if(persona == null) {
-				response.put("mensaje", "Error: no se pudo agregar el estudio, la persona ID: ".concat(id.toString()).concat(" no existe en la base de datos!"));
+				response.put("mensaje", "Error: no se pudo agregar el estudio, la persona username: ".concat(username).concat(" no existe en la base de datos!"));
 				return new ResponseEntity<Map<String, Object>> (response, HttpStatus.NOT_FOUND);
 			}
 			

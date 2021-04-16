@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,6 +37,10 @@ public class Persona implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 
 	@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -119,13 +124,14 @@ public class Persona implements Serializable {
 		this.experiencias = new ArrayList<>();
 	}
 
-	public Persona(Long id, List<Conocimiento> conocimientos, List<Estudio> estudios, List<Experiencia> experiencias,
-			@NotBlank String primerNombre, @NotBlank String segundoNombre, @NotBlank String primerApellido,
-			@NotBlank String segundoApellido, @NotBlank String telefono, @NotBlank @Email String email,
-			@NotBlank String run, @NotBlank String estadoCivil, String imagen, @NotBlank String nacionalidad,
-			@NotNull Date fechaNacimiento, String presentacion, @NotBlank String ciudad, @NotBlank String calle,
-			@NotNull int numero) {
+	public Persona(Long id, Usuario usuario, List<Conocimiento> conocimientos, List<Estudio> estudios,
+			List<Experiencia> experiencias, @NotBlank String primerNombre, @NotBlank String segundoNombre,
+			@NotBlank String primerApellido, @NotBlank String segundoApellido, @NotBlank String telefono,
+			@NotBlank @Email String email, @NotBlank String run, @NotBlank String estadoCivil, String imagen,
+			@NotBlank String nacionalidad, @NotNull Date fechaNacimiento, String presentacion, @NotBlank String ciudad,
+			@NotBlank String calle, @NotNull int numero) {
 		this.id = id;
+		this.usuario = usuario;
 		this.conocimientos = conocimientos;
 		this.estudios = estudios;
 		this.experiencias = experiencias;
@@ -310,14 +316,23 @@ public class Persona implements Serializable {
 		this.numero = numero;
 	}
 
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 	@Override
 	public String toString() {
-		return "Persona [id=" + id + ", conocimientos=" + conocimientos + ", estudios=" + estudios + ", experiencias="
-				+ experiencias + ", primerNombre=" + primerNombre + ", segundoNombre=" + segundoNombre
-				+ ", primerApellido=" + primerApellido + ", segundoApellido=" + segundoApellido + ", telefono="
-				+ telefono + ", email=" + email + ", run=" + run + ", estadoCivil=" + estadoCivil + ", imagen=" + imagen
-				+ ", nacionalidad=" + nacionalidad + ", fechaNacimiento=" + fechaNacimiento + ", presentacion="
-				+ presentacion + ", ciudad=" + ciudad + ", calle=" + calle + ", numero=" + numero + "]";
+		return "Persona [id=" + id + ", usuario=" + usuario + ", conocimientos=" + conocimientos + ", estudios="
+				+ estudios + ", experiencias=" + experiencias + ", primerNombre=" + primerNombre + ", segundoNombre="
+				+ segundoNombre + ", primerApellido=" + primerApellido + ", segundoApellido=" + segundoApellido
+				+ ", telefono=" + telefono + ", email=" + email + ", run=" + run + ", estadoCivil=" + estadoCivil
+				+ ", imagen=" + imagen + ", nacionalidad=" + nacionalidad + ", fechaNacimiento=" + fechaNacimiento
+				+ ", presentacion=" + presentacion + ", ciudad=" + ciudad + ", calle=" + calle + ", numero=" + numero
+				+ "]";
 	}
 
 }

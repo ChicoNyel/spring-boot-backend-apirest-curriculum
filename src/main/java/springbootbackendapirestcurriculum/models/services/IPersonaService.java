@@ -14,4 +14,6 @@ public interface IPersonaService {
 	
 	public void delete(Long id);
 	
+	public Persona findByUsername(String username);
+	
 }

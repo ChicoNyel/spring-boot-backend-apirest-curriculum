@@ -22,8 +22,10 @@ public class SpringBootBackendApirestCurriculumApplication implements CommandLin
 		String password = "12345";
 		
 		String passwordBcrypt = passwordEncoder.encode(password);
+		String passwordBcrypt2 = passwordEncoder.encode(password);
 		
 		System.out.println(passwordBcrypt);
+		System.out.println(passwordBcrypt2);
 		
 	}
 
