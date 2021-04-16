@@ -248,7 +248,6 @@ public class PersonaRestController {
 		
 	}
 	
-	@Secured("ROLE_USER")
 	@GetMapping("/personas/uploads/img/{nombreFoto:.+}")
 	public ResponseEntity<Resource> verFoto(@PathVariable String nombreFoto){
 		
